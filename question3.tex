@@ -1,0 +1,45 @@
+\subsection*{(4.h) Changing the quantile to build 99\% CIs}
+
+Replacing $0.975$ by $0.995$ in the $t$ quantile produces a \emph{99\%} confidence
+interval for $\beta_2$:
+\[
+\left[\;\widehat\beta_2 - t_{0.995,\nu}\,\mathrm{SE}(\widehat\beta_2),\;
+       \widehat\beta_2 + t_{0.995,\nu}\,\mathrm{SE}(\widehat\beta_2)\;\right],
+\qquad \nu = n-2 = 48 .
+\]
+Under the classical linear model with normal, homoskedastic errors and fixed $x$,
+this $t$–interval has \emph{exact} finite–sample coverage $p=0.99$ (conditional on $x$).
+With $M=10{,}000$ replications, the reported statistic
+\[
+\texttt{Ratio}=\frac{1}{M}\sum_{m=1}^{M}\mathbf{1}\{\text{CI}_m\ \text{contains}\ \beta_2\}
+\]
+is the sample mean of i.i.d.\ Bernoulli$(p)$ variables, so
+\[
+\mathbb{E}[\texttt{Ratio}]=0.99,\qquad
+\mathrm{SE}(\texttt{Ratio})=\sqrt{\frac{p(1-p)}{M}}
+=\sqrt{\frac{0.99\cdot0.01}{10{,}000}}\approx 0.0010 .
+\]
+By the CLT, a 95\% normal approximation interval for the empirical coverage is
+\[
+0.99 \pm 1.96\times 0.0010 \approx [0.988,\;0.992].
+\]
+Hence we would expect \texttt{Ratio} to be very close to $99\%$ (within about $\pm0.2$ percentage points).
+
+\paragraph{Effect on the plot.}
+Because $t_{0.995,\nu}>t_{0.975,\nu}$, the intervals become \emph{wider} (both endpoints move farther from
+$\widehat\beta_2$). Consequently, almost all intervals (about $99\%$) cross the vertical line at the true value
+$\beta_2=5$; only about $1\%$ fail to cover. Visually: many fewer “non-covering” intervals and uniformly wider
+segments.
+
+\subsection*{(4.i) Purpose of the simulation}
+
+This exercise illustrates:
+\begin{itemize}
+  \item the meaning of a confidence interval as a \emph{procedure with coverage}: across repeated samples,
+        a $1-\alpha$ CI contains the true parameter with probability $1-\alpha$ (here verified empirically by \texttt{Ratio});
+  \item how the nominal level ($95\%$ vs.\ $99\%$) trades off \emph{coverage} and \emph{width} (higher coverage $\Rightarrow$ wider CIs);
+  \item Monte Carlo sampling variability: with finite $M$, the empirical coverage fluctuates around the nominal level with
+        variance $p(1-p)/M$, shrinking as $M$ grows (LLN/CLT);
+  \item in the classical normal homoskedastic regression with fixed regressors, the $t$–interval achieves
+        its \emph{exact} nominal coverage in finite samples, which the simulation confirms as $M$ becomes large.
+\end{itemize}
